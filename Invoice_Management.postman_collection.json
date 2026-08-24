@@ -1,0 +1,275 @@
+{
+  "info": {
+    "name": "Invoice Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Invoice Draft",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.id) {",
+              "    pm.collectionVariables.set(\"draftInvoiceId\", jsonData.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customerName\": \"Nguyen Van A\",\n  \"customerTaxCode\": \"0102030405\",\n  \"customerAddress\": \"123 Duong Hoang Hoa Tham, Hanoi\",\n  \"customerEmail\": \"khachhang@example.com\",\n  \"paymentMethod\": \"CK\",\n  \"taxRate\": 0.10,\n  \"items\": [\n    {\n      \"description\": \"Dich vu Cloud Hosting\",\n      \"quantity\": 2,\n      \"unitPrice\": 150000\n    },\n    {\n      \"description\": \"Ten mien quoc te .com\",\n      \"quantity\": 1,\n      \"unitPrice\": 250000\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/invoices",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "invoices"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Invoice List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/invoices?page=1&limit=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "invoices"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            },
+            {
+              "key": "status",
+              "value": "DRAFT",
+              "disabled": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Invoice Details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/invoices/{{draftInvoiceId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "invoices",
+            "{{draftInvoiceId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update Invoice Draft",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customerName\": \"Nguyen Van A Updated\",\n  \"items\": [\n    {\n      \"description\": \"Dich vu Cloud Hosting - Upgrade\",\n      \"quantity\": 2,\n      \"unitPrice\": 180000\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/invoices/{{draftInvoiceId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "invoices",
+            "{{draftInvoiceId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Issue Invoice",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.id) {",
+              "    pm.collectionVariables.set(\"issuedInvoiceId\", jsonData.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/invoices/{{draftInvoiceId}}/issue",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "invoices",
+            "{{draftInvoiceId}}",
+            "issue"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Download Invoice PDF",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/invoices/{{issuedInvoiceId}}/pdf",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "invoices",
+            "{{issuedInvoiceId}}",
+            "pdf"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Replace Invoice (Create Replacement)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customerName\": \"Nguyen Van A (Hoa don thay the)\",\n  \"customerTaxCode\": \"0102030405\",\n  \"customerAddress\": \"123 Duong Hoang Hoa Tham, Hanoi\",\n  \"customerEmail\": \"khachhang@example.com\",\n  \"paymentMethod\": \"CK\",\n  \"items\": [\n    {\n      \"description\": \"Dich vu Cloud Hosting (Sai gia truoc do)\",\n      \"quantity\": 2,\n      \"unitPrice\": 140000\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/invoices/{{issuedInvoiceId}}/replace",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "invoices",
+            "{{issuedInvoiceId}}",
+            "replace"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Cancel Invoice",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/invoices/{{issuedInvoiceId}}/cancel",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "invoices",
+            "{{issuedInvoiceId}}",
+            "cancel"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Invoice Draft",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/invoices/{{draftInvoiceId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "invoices",
+            "{{draftInvoiceId}}"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "draftInvoiceId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "issuedInvoiceId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

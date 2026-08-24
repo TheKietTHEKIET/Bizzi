@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  CANCELED
+  REPLACED
+}
+
+model Invoice {
+  id                 String        @id @default(uuid())
+  invoiceNumber      String?       @unique
+  customerName       String
+  customerTaxCode    String?
+  customerAddress    String?
+  customerEmail      String?
+  paymentMethod      String?       @default("CK")
+  subTotal           Decimal       @default(0) @db.Decimal(15, 2)
+  taxRate            Decimal       @default(0.10) @db.Decimal(5, 2)
+  taxAmount          Decimal       @default(0) @db.Decimal(15, 2)
+  amount             Decimal       @default(0) @db.Decimal(15, 2) // Grand total
+  status             InvoiceStatus @default(DRAFT)
+  issueDate          DateTime?
+  referenceInvoiceId String?       @unique
+  
+  // Relations
+  referenceInvoice   Invoice?      @relation("InvoiceReplacement", fields: [referenceInvoiceId], references: [id])
+  replacedBy         Invoice?      @relation("InvoiceReplacement")
+  
+  items              InvoiceItem[]
+  
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+model InvoiceItem {
+  id          String   @id @default(uuid())
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Int
+  unitPrice   Decimal  @db.Decimal(15, 2)
+  amount      Decimal  @db.Decimal(15, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
