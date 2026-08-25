@@ -10,7 +10,6 @@ export function generateInvoicePdf(invoice: any): Promise<Buffer> {
       doc.on("end", () => resolve(Buffer.concat(chunks)));
       doc.on("error", (err) => reject(err));
 
-      // Try to load Arial font from Windows, fallback to Helvetica
       let fontBold = "Helvetica-Bold";
       let fontNormal = "Helvetica";
       try {
@@ -23,16 +22,16 @@ export function generateInvoicePdf(invoice: any): Promise<Buffer> {
       }
 
       // --- HEADER ---
-      doc.font(fontBold).fontSize(14).fillColor("#1e293b").text("CONG TY CO PHAN BIZZI VIET NAM", 50, 50);
+      doc.font(fontBold).fontSize(14).fillColor("#1e293b").text("CONG TY CO PHAN ABC VIET NAM", 50, 50);
       doc.font(fontNormal).fontSize(9).fillColor("#64748b")
-        .text("Bizzi Vietnam Joint Stock Company")
+        .text("ACB Vietnam Joint Stock Company")
         .text("Address: Tang 3, Toa nha H3, 384 Hoang Dieu, Phuong 6, Quan 4, TP. HCM")
         .text("Tax Code / MST: 0316086256")
-        .text("Email: support@bizzi.vn");
+        .text("Email: support@abc.vn");
 
       // Title & Status
-      doc.font(fontBold).fontSize(16).fillColor("#0f172a").text("HOA DON GIA TRI GIA TANG", 330, 50, { align: "right" });
-      doc.font(fontNormal).fontSize(11).fillColor("#475569").text("VAT INVOICE", 330, 70, { align: "right" });
+      doc.font(fontBold).fontSize(16).fillColor("#0f172a").text("HOA DON GIA TRI GIA TANG", 200, 50, { align: "right" });
+      doc.font(fontNormal).fontSize(11).fillColor("#475569").text("VAT INVOICE", 200, 70, { align: "right" });
 
       // Invoice status badge
       const statusColors: Record<string, string> = {

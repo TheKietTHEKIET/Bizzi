@@ -10,7 +10,7 @@ import {
 const router = Router();
 const controller = new InvoiceController();
 
-// Basic CRUD
+// CRUD
 router.post("/", validateBody(CreateInvoiceSchema), controller.createInvoice.bind(controller));
 router.get("/", controller.listInvoices.bind(controller));
 router.get("/:id", controller.getInvoiceById.bind(controller));

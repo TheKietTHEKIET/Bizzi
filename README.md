@@ -103,11 +103,8 @@ Dự án có đi kèm file Postman collection [Invoice_Management.postman_collec
 1. **Lần đầu sử dụng PostgreSQL & Prisma ORM**:
    - Được tiếp cận và làm quen với PostgreSQL. Nhờ đã có nền tảng cơ bản về MySQL và SQL Server từ trước, việc tư duy thiết kế cơ sở dữ liệu quan hệ hay các mối quan hệ bảng không gặp trở ngại nào lớn. Thay vào đó, tập trung học hỏi các đặc thù cấu hình, kiểu dữ liệu riêng của PostgreSQL và cách tích hợp mượt mà thông qua Prisma.
 2. **Quy trình SQL Migration với Prisma**:
-   - Hiểu sâu về cách thức hoạt động của SQL Migrations (`prisma migrate dev`). Ở các cơ sở dữ liệu NoSQL như MongoDB (dù cũng hỗ trợ viết Prisma schema nhưng cơ chế là schema-less và không hề có khái niệm SQL migration hay sinh file `.sql` để chạy DDL), việc chuyển đổi sang dùng SQL migrations để đồng bộ cấu trúc bảng và quản lý lịch sử thay đổi schema là một kiến thức mới mẻ và cực kỳ hữu ích.
-3. **Thiết kế & Tạo file PDF bằng Code (PDFKit)**:
-   - Học cách căn lề, vẽ bảng biểu, chèn watermark trạng thái (CANCELED/REPLACED) bằng tọa độ vector thủ công.
-   - Thiết kế hóa đơn theo dạng song ngữ Anh-Việt chuẩn doanh nghiệp.
-4. **Tư duy kiểm thử tự động (Unit / Integration Test)**:
+   - Hiểu sâu về cách thức hoạt động của SQL Migrations (`prisma migrate dev`).
+3. **Tư duy kiểm thử tự động (Unit / Integration Test)**:
    - Thiết lập bộ test hoàn chỉnh bằng Jest và Supertest. Viết test case bao phủ toàn bộ vòng đời của hóa đơn, các trường hợp vi phạm trạng thái và kiểm tra kiểu file PDF trả về.
 
 ---
